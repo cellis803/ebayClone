@@ -11,11 +11,11 @@ app.use(bodyParser.urlencoded({
 app.use('/', express.static('html'));
 
 app.post('/user', function (request, response) {
-    console.log("create a user");
+    console.log("add a user");
     var name = request.body.userId;
-    ebayDB.createUser(name).then(
+    ebayDB.AddUser(name).then(
         () => {
-            response.send("user created");
+            response.send("user added");
         }).catch(err => {
             console.log(err);
             response.status(500);
@@ -28,8 +28,8 @@ app.post('/bid', function (request, response) {
     var userId = request.body.userId;
     var auctionId = request.params.auctionId;
     var bidValue = request.body.bidValue;
-    var endDateTime = request.params.endDateTime;
-    ebayDB.createBid(userId, auctionId, bidValue, endDateTime).then(
+    var dateTime = request.params.endDateTime;
+    ebayDB.AddBid(userId, auctionId, bidValue, dateTime).then(
         () => {
             response.send("bid posted");
         }).catch(err => {
@@ -40,15 +40,15 @@ app.post('/bid', function (request, response) {
 });
 
 app.post('/auction', function (request, response) {
-    console.log("creating an auction item");
+    console.log("add auction item");
     var userId = request.body.userId;
     var title = request.params.title;
     var description = request.params.description;
     var startingBid = request.params.startingBid;
     var endDateTime = request.params.endDateTime;
-    ebayDB.createAuctionItem(userId, title, description, startingBid, endDateTime).then(
+    ebayDB.AddAuction(userId, title, description, startingBid, endDateTime).then(
         () => {
-            response.send("created auction item");
+            response.send("added auction item");
         }).catch(err => {
             console.log(err);
             response.status(500);
@@ -59,7 +59,7 @@ app.post('/auction', function (request, response) {
 app.get('/auctions/:auctionId', function (request, response) {
     console.log("getting the auction feed");
     var auctionId = request.params.auctionId;
-    ebayDB.getAuctionStreamByUser(auctionId).then(
+    ebayDB.GetAllAuctions(auctionId).then(
         auctions => {
             response.send(auctions);
 
