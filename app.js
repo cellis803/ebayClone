@@ -53,8 +53,9 @@ app.use('/', express.static('html'));
 // });
 
 app.listen(8080, function () {
+    console.log('Starting ebay clone server...');
     console.log('Example app listening on port 8080...');
-
+    
     var p = ebayDB.initDB();
     p.then(
         val => {
