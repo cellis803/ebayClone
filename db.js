@@ -3,7 +3,6 @@ var db = new sqlite3.Database('ebay.db');
 
 module.exports = {
     initDB: function () {
-
         return new Promise(
             (resolve, reject) => {
                 db.serialize(function () {
@@ -28,16 +27,74 @@ module.exports = {
         return new Promise(
             (resolve, reject) => {
                 db.serialize(function () {
-                    db.all("SELECT * from auction", function (err, rows) {
-                        if (rows.length === 1) {
-                            resolve(rows);
+                    db.all("SELECT userId, title, description, startingBid, endDateTime from auction", function (err, rows) {
+                        if (err) {
+                            reject("Auction table does not exist");                            
                         } else {
-                            reject("Auctions table does not exist");
+                            resolve(rows);
                         }
 
                     });
                 });
             });
+    },
+
+    AddUser: function(name){
+        return new Promise(
+            (resolve, reject) => {
+                db.serialize( function(){
+                    var stmt = db.prepare("INSERT into user values (?)");
+                    stmt.run(name, function(error){
+                        if(error)
+                        {
+                            reject(error);
+                        }
+                        else
+                        {
+                            stmt.finalize();
+                            resolve();
+                        }
+                    })
+                })
+            }
+        )
+    },
+
+    GetUserId: function (name) {
+        return new Promise(
+            (resolve, reject) => {
+                db.serialize(function () {
+                    db.each("SELECT rowid from user where name = '" + name + "'", function (err, row) {
+                        if (err) {
+                            reject("User table does not exist");
+                        } else {
+                            resolve(row);
+                        }
+
+                    });
+                });
+            });
+    },
+
+    AddAuction: function(userid, title, description, startingbid, endtime){
+        return new Promise(
+            (resolve, reject) => {
+                db.serialize( function () {
+                    var stmt = db.prepare("INSERT into auction values (?,?,?,?,?)");
+                    stmt.run(userid, title, description, startingbid, endtime, function(error){
+                        if(error)
+                        {
+                            reject(error);
+                        }
+                        else
+                        {
+                            stmt.finalize();
+                            resolve();
+                        }
+                    })
+                })
+            }
+        )
     }
 
     // createUser: function (name) {
