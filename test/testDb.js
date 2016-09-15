@@ -26,11 +26,23 @@ before(function() {
 
 describe('eBay Clone DB tests', function () {
 
-    it('test nothing', function() {
-        assert.isTrue(true);
-    })
+    describe('test nothing', function () {
+        it('should pass', function() {
+            assert.isTrue(true);
+        });
+    }); 
+
+    describe('test getUserId', function () {
+        it('should get user ID for valid user', function() {
+            return db.GetUserId("Chris").then(function(data){
+                expect(data.rowid).to.equal(1);
+            });
+        });
+    });    
 });
 
-// after(function() {
-//   db.tearDown();
-// });
+
+
+after(function() {
+  db.tearDown();
+});

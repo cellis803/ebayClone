@@ -10,10 +10,10 @@ module.exports = {
 
                     console.log("CREATE TABLE IF NOT EXISTS user (name TEXT NOT NULL)");
                     db.run("CREATE TABLE IF NOT EXISTS user (name TEXT NOT NULL)");
-                    console.log("CREATE TABLE IF NOT EXISTS auction (userId INTEGER NOT NULL, title TEXT NOT NULL, description TEXT, startingBid REAL, endDateTime DATETIME NOT NULL, FOREIGN KEY(userId) REFERENCES user(rowid))");
+                    console.log("CREATE TABLE IF NOT EXISTS auction (userId INTEGER NOT NULL, title TEXT NOT NULL, description TEXT, startingBid REAL NOT NULL, endDateTime DATETIME NOT NULL, FOREIGN KEY(userId) REFERENCES user(rowid))");
                     db.run("CREATE TABLE IF NOT EXISTS auction (userId INTEGER NOT NULL, title TEXT NOT NULL, description TEXT, startingBid REAL, endDateTime DATETIME NOT NULL, FOREIGN KEY(userId) REFERENCES user(rowid))");
                     console.log("CREATE TABLE IF NOT EXISTS bid (userId INTEGER NOT NULL, auctionId INTEGER NOT NULL, FOREIGN KEY(userId) REFERENCES user(rowid), FOREIGN KEY(auctionId) REFERENCES auction(rowid))");
-                    db.run("CREATE TABLE IF NOT EXISTS bid (userId INTEGER NOT NULL, auctionId INTEGER NOT NULL, FOREIGN KEY(userId) REFERENCES user(rowid), FOREIGN KEY(auctionId) REFERENCES auction(rowid))");
+                    db.run("CREATE TABLE IF NOT EXISTS bid (userId INTEGER NOT NULL, auctionId INTEGER NOT NULL, bidValue REAL NOT NULL, dateTime REAL NOT NULL, FOREIGN KEY(userId) REFERENCES user(rowid), FOREIGN KEY(auctionId) REFERENCES auction(rowid))");
 
                     console.log("tables have been created :)");
                     resolve();
