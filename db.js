@@ -22,6 +22,22 @@ module.exports = {
     }
 
     
+        GetAllAuctions:function() {
+        return new Promise(
+            (resolve, reject) => {
+                db.serialize(function () {
+                    db.all("SELECT * from auction", function (err, rows) {
+                            if (rows.length === 1) {
+                                resolve(rows);
+                            } else {
+                                reject("Auctions table does not exist");
+                            }
+                            
+                        });
+                });
+            });
+    }
+
     // createUser: function (name) {
     //     return new Promise(
     //         (resolve, reject) => {
