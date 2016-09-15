@@ -80,6 +80,11 @@ app.listen(8080, function () {
     p.then(
         val => {
 
+            if (process.argv[2] === "-loadTestData") {
+                ebayDB.loadTestData();
+            }
+
+            
         }).catch(
         err => {
             //handle all errors

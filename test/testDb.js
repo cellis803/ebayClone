@@ -9,8 +9,19 @@ chai.should();
 var assert = chai.assert;
 
 before(function() {
-  db.initDB();
-  //db.loadTestData();
+  db.initDB().then(
+        success => {
+            db.loadTestData().then(
+                success => {
+                    console.log("added test data");
+                }
+            );
+        }).catch(err => {
+                console.log(err);
+                response.status(500);
+                response.send(err);                
+        });
+  
 });
 
 describe('eBay Clone DB tests', function () {
@@ -19,3 +30,7 @@ describe('eBay Clone DB tests', function () {
         assert.isTrue(true);
     })
 });
+
+// after(function() {
+//   db.tearDown();
+// });
