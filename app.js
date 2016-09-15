@@ -87,7 +87,7 @@ app.get('/auctions/', function (request, response) {
         });
 });
 
-var server = app.listen(8080, function () {
+var server = app.listen(3000, function () {
     console.log('Starting ebay clone server...');
     console.log('Example app listening on port 8080...');
 
