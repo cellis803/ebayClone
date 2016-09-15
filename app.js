@@ -87,7 +87,7 @@ app.get('/auctions/', function (request, response) {
         });
 });
 
-app.listen(8080, function () {
+var server = app.listen(8080, function () {
     console.log('Starting ebay clone server...');
     console.log('Example app listening on port 8080...');
 
@@ -98,12 +98,11 @@ app.listen(8080, function () {
             if (process.argv[2] === "-loadTestData") {
                 ebayDB.loadTestData();
             }
-
-            
+   
         }).catch(
         err => {
             //handle all errors
             console.log(err);
         });
-
 });
+module.exports = server;
