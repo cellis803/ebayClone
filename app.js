@@ -12,8 +12,8 @@ app.use('/', express.static('html'));
 
 app.post('/user', function (request, response) {
     console.log("add a user");
-    var name = request.body.userId;
-    ebayDB.AddUser(userId).then(
+    var name = request.body.name;
+    ebayDB.AddUser(name).then(
         () => {
             response.send("user added");
         }).catch(err => {
