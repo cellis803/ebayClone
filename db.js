@@ -20,10 +20,27 @@ module.exports = {
                 });
             });
     },
+  
+
+    loadTestData: function() {
+        return new Promise(
+            (resolve, reject) => {
+                db.serialize(function () {
+
+                    console.log("loading test data...");
+                    db.run("INSERT INTO user VALUES ('Chris')");
+                    db.run("INSERT INTO user VALUES ('Haritha')");
+                    db.run("INSERT INTO user VALUES ('Carolyn')");
+                    
+                    db.run("INSERT INTO auction VALUES (1,'Poulan Pro 18\" Chainsaw','used, piece of junk. good luck.',1,111111)");
 
 
+                    resolve();
+                });
+            });
+    },
 
-    GetAllAuctions: function () {
+   GetAllAuctions: function () {
         return new Promise(
             (resolve, reject) => {
                 db.serialize(function () {
@@ -72,8 +89,8 @@ module.exports = {
                         }
 
                     });
-                });
-            });
+                });  
+        });
     },
 
     AddAuction: function(userid, title, description, startingbid, endtime){
@@ -95,7 +112,26 @@ module.exports = {
                 })
             }
         )
-    }
+    },
+
+    tearDown: function() {
+        return new Promise(
+            (resolve, reject) => {
+                db.serialize(function () {
+                    console.log("dropping tables...");
+
+                    console.log("DROP TABLE bid");
+                    db.run("DROP TABLE bid");
+                    console.log("DROP TABLE auction");
+                    db.run("DROP TABLE auction"); 
+                    console.log("DROP TABLE user");
+                    db.run("DROP TABLE user");
+
+                    console.log("tables have been dropped :)");
+                    resolve();
+                }) 
+        });
+    },
 
     // createUser: function (name) {
     //     return new Promise(
