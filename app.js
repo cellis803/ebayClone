@@ -57,9 +57,24 @@ app.post('/auction', function (request, response) {
 });
 
 app.get('/auctions/:auctionId', function (request, response) {
-    console.log("getting the auction feed");
+    console.log("get specific auction item");
     var auctionId = request.params.auctionId;
-    ebayDB.GetAllAuctions(auctionId).then(
+    ebayDB.GetAnAuction(auctionId).then(
+        auctions => {
+            response.send(auctions);
+
+        }).catch(
+        err => {
+            //handle all errors
+            console.log(err);
+            response.status(500);
+            response.send();
+        });
+});
+
+app.get('/auctions/', function (request, response) {
+    console.log("getting the auction feed");
+    ebayDB.GetAllAuctions().then(
         auctions => {
             response.send(auctions);
 
