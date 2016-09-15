@@ -40,9 +40,3 @@ describe('eBay Clone DB tests', function () {
         });
     });    
 });
-
-
-
-after(function() {
-  db.tearDown();
-});

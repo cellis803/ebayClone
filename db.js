@@ -27,6 +27,12 @@ module.exports = {
             (resolve, reject) => {
                 db.serialize(function () {
 
+                    console.log("truncating tables...");
+                    db.run("DELETE FROM bid");
+                    db.run("DELETE FROM auction");
+                    db.run("DELETE FROM user");
+                                      
+
                     console.log("loading test data...");
                     db.run("INSERT INTO user VALUES ('Chris')");
                     db.run("INSERT INTO user VALUES ('Haritha')");
