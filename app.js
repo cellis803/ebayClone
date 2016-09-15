@@ -22,7 +22,7 @@ app.use('/', express.static('html'));
 //         });
 // });
 
-// app.post('/addtweet', function(request, response) {
+// app.post('/bid', function(request, response) {
 //     var userid = request.body.userid;
 //     var tweetText = request.body.tweetText;
 //     var timestamp = moment().format('YYYY-MM-DD H:mm:ss');
@@ -36,21 +36,37 @@ app.use('/', express.static('html'));
 //         });
 // });
 
-// app.get('/userfeed/:userid', function (request, response) {
-//     console.log("I'm getting the tweet feed");
-//     var userId = request.params.userid;
-//     tweeterdb.getTweetStreamByUser(userId).then(
-//         tweets => {
-//             response.send(tweets);
+app.post('/bid', function(request, response) {
+    console.log("I'm bidding on an item");
+    var userid = request.body.userid;
+    var bidid = request.body.bidid;
+    var bidValue = request.body.bidValue;
+    var timestamp = moment().format('YYYY-MM-DD H:mm:ss');
+    ebaydb.createByid(userid, bidid, bidValue, timestamp, null).then(
+        () => {
+            response.send("bid posted");
+        }).catch(err => {
+                console.log(err);
+                response.status(500);
+                response.send(err);                
+        });
+});
 
-//         }).catch(
-//         err => {
-//             //handle all errors
-//             console.log(err);
-//             response.status(500);
-//             response.send();
-//         });
-// });
+app.get('/auctions/:auctionId', function (request, response) {
+    console.log("I'm getting the auction feed");
+    var auction = request.params.auctionId;
+    ebaydb.getAuctionStreamByUser(auctionId).then(
+        auctions => {
+            response.send(auctions);
+
+        }).catch(
+        err => {
+            //handle all errors
+            console.log(err);
+            response.status(500);
+            response.send();
+        });
+});
 
 app.listen(8080, function () {
     console.log('Example app listening on port 8080...');
