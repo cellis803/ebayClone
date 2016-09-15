@@ -6,56 +6,60 @@ var bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-    extended: true  
+    extended: true
 }));
 app.use('/', express.static('html'));
 
-// app.post('/login', function(request, response) {
-  
-//     tweeterdb.loginUser(request.body.name).then(
-//         user => {
-//             response.send(user);
-//         }).catch(err => {
-//                 console.log(err);
-//                 response.status(500);
-//                 response.send(err);                
-//         });
-// });
+app.post('/user', function (request, response) {
+    console.log("create a user");
+    var name = request.body.userId;
+    ebayDB.createUser(name).then(
+        () => {
+            response.send("user created");
+        }).catch(err => {
+            console.log(err);
+            response.status(500);
+            response.send(err);
+        });
+});
 
-// app.post('/bid', function(request, response) {
-//     var userid = request.body.userid;
-//     var tweetText = request.body.tweetText;
-//     var timestamp = moment().format('YYYY-MM-DD H:mm:ss');
-//     tweeterdb.createTweet(userid, tweetText, timestamp, null).then(
-//         () => {
-//             response.send("success added");
-//         }).catch(err => {
-//                 console.log(err);
-//                 response.status(500);
-//                 response.send(err);                
-//         });
-// });
-
-app.post('/bid', function(request, response) {
-    console.log("I'm bidding on an item");
-    var userid = request.body.userid;
-    var bidid = request.body.bidid;
+app.post('/bid', function (request, response) {
+    console.log("bidding on an item");
+    var userId = request.body.userId;
+    var auctionId = request.params.auctionId;
     var bidValue = request.body.bidValue;
-    var timestamp = moment().format('YYYY-MM-DD H:mm:ss');
-    ebaydb.createByid(userid, bidid, bidValue, timestamp, null).then(
+    var endDateTime = request.params.endDateTime;
+    ebayDB.createBid(userId, auctionId, bidValue, endDateTime).then(
         () => {
             response.send("bid posted");
         }).catch(err => {
-                console.log(err);
-                response.status(500);
-                response.send(err);                
+            console.log(err);
+            response.status(500);
+            response.send(err);
+        });
+});
+
+app.post('/auction', function (request, response) {
+    console.log("creating an auction item");
+    var userId = request.body.userId;
+    var title = request.params.title;
+    var description = request.params.description;
+    var startingBid = request.params.startingBid;
+    var endDateTime = request.params.endDateTime;
+    ebayDB.createAuctionItem(userId, title, description, startingBid, endDateTime).then(
+        () => {
+            response.send("created auction item");
+        }).catch(err => {
+            console.log(err);
+            response.status(500);
+            response.send(err);
         });
 });
 
 app.get('/auctions/:auctionId', function (request, response) {
-    console.log("I'm getting the auction feed");
-    var auction = request.params.auctionId;
-    ebaydb.getAuctionStreamByUser(auctionId).then(
+    console.log("getting the auction feed");
+    var auctionId = request.params.auctionId;
+    ebayDB.getAuctionStreamByUser(auctionId).then(
         auctions => {
             response.send(auctions);
 
@@ -71,7 +75,7 @@ app.get('/auctions/:auctionId', function (request, response) {
 app.listen(8080, function () {
     console.log('Starting ebay clone server...');
     console.log('Example app listening on port 8080...');
-    
+
     var p = ebayDB.initDB();
     p.then(
         val => {
