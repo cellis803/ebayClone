@@ -13,7 +13,7 @@ app.use('/', express.static('html'));
 app.post('/user', function (request, response) {
     console.log("add a user");
     var name = request.body.userId;
-    ebayDB.AddUser(name).then(
+    ebayDB.AddUser(userId).then(
         () => {
             response.send("user added");
         }).catch(err => {
@@ -28,7 +28,7 @@ app.post('/bid', function (request, response) {
     var userId = request.body.userId;
     var auctionId = request.params.auctionId;
     var bidValue = request.body.bidValue;
-    var dateTime = request.params.endDateTime;
+    var dateTime = request.params.dateTime;
     ebayDB.AddBid(userId, auctionId, bidValue, dateTime).then(
         () => {
             response.send("bid posted");
