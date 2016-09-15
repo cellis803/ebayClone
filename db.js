@@ -39,6 +39,7 @@ module.exports = {
                     db.run("INSERT INTO user VALUES ('Carolyn')");
                     
                     db.run("INSERT INTO auction VALUES (1,'Poulan Pro 18\" Chainsaw','used, piece of junk. good luck.',1,111111)");
+                    db.run("INSERT INTO auction VALUES (3,'2008 Honda Civic Si','sporty 6 speed',5000,111111)");
 
 
                     resolve();
