@@ -104,19 +104,29 @@ var AuctionList = React.createClass({
             $.getJSON("/auctions", function( data ) {
                     that.setState({auctionList: data});
                     
-            }); 
+            });
     },
     
+    AddAuction: function() {
+            
+    },
+
+    bid: function () {
+        // var that = this;
+        // $.putJ
+    },
+
     render: function() {
+                var that = this;
                 return (
                     <div id="ebayHome">
-                    <h1>{this.props.user.name}</h1>
                         <div className="yui3-g">
                             <div className="yui3-u-2-3">
                                 <div id="auctionList"> 
                                     {
+                                        
                                         this.state.auctionList.map(function(val, idx) {
-                                                return <Auction key={val.rowid} data={val}/>;
+                                                return <Auction key={val.rowid} user={that.props.user} data={val}/>;
                                         })
                                     }
                                 </div>
@@ -132,7 +142,17 @@ var Auction = React.createClass({
         return {};
     },
 
+    bid: function() {
+        $("#bidDialog").dialog("open");
+    },
     render: function() {
+        var button;
+        if (this.props.user.name) {
+            button = <input className="ebayButton" id="bidBtnId" type="submit" value="Bid" onClick={this.bid} />;
+        } else {
+            button = null;
+        }
+
         return (
             <div className="yui3-g auction">
                 <div className="yui3-u">
@@ -140,6 +160,7 @@ var Auction = React.createClass({
                         <div className="yui3-u-1">
                             <a href="#">{this.props.data.title}</a>&nbsp;(<span className="sellerName">{this.props.data.sellerName}</span>) <span className="currentBid">Current Bid: ${this.props.data.currentBid}</span>
                             <br/>{this.props.data.description} 
+                            {button}
                         </div>
                     </div>
                 </div>

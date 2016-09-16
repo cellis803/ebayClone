@@ -5,13 +5,43 @@
     <title>eBay clone</title>
     <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.18.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" type="text/css" href="ebayStyles.css"/>
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/ui-lightness/jquery-ui.min.css"/>
+    
 </head>
 <body>
 
     <div id="main"></div>
-
+    <div id="bidDialog">
+        <h1>Bid here</h1>
+    </div>
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
     <script src="http://localhost:8080/bundle.js"></script>
 
+<script>
+    $(document).ready(function() {
+        var bidDialog = $("#bidDialog").dialog({
+            
+                autoOpen: false,
+                height: 400,
+                width: 350,
+                modal: true,
+                buttons: {
+                    "Submit Bid": function() {
+                            alert('good luck!');
+                    },
+                    Cancel: function() {
+                        bidDialog.dialog( "close" );
+                    }
+                },
+                close: function() {
+                    //form[ 0 ].reset();
+                    //allFields.removeClass( "ui-state-error" );
+                }
+                        
+            });
+    });
+
+</script>
 </body>
 </html>
