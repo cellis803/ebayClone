@@ -12,18 +12,15 @@ var EbayClone = React.createClass({
     },
 
     render: function() {
-        if (this.state.loggedInUser !== "") {
-            return (<AuctionList user={this.state.loggedInUser} />);
-        } else {
-            return (<Login setLoggedIn={this.logMeIn} />);
-        }
+        return (<AuctionList user={this.state.loggedInUser} />);
     }
 
 });
 
 var Login = React.createClass({
     getInitialState: function() {
-        return {error: false};
+        return {error: false,
+                loggedInUser: ""};
     },
 
     handleClick: function(event) {
@@ -36,11 +33,11 @@ var Login = React.createClass({
         $.post("/login", userObj, function(data) {
             
         }).done(function(loggedInUser) {
-            that.setState({error: false});
-            that.props.setLoggedIn(loggedInUser.userId);
+            that.setState(Object.assign({error: false, loggedInUser: loggedInUser}));
+            that.props.setLoggedIn(loggedInUser.rowid);
 
         }).fail(function() {
-            that.setState({error: true});
+            that.setState({error: true, loggedInUser: ""});
         })
             
     },
@@ -55,11 +52,17 @@ var Login = React.createClass({
                 </div>
                 
             );
-        } else {
+        } else if (this.state.loggedInUser === "") {
             return (
                 <div>
                     Login with your username: <input type="text" id="username" name="name"  />
                     <input id="loginButton" type="submit" value="Login" onClick={this.handleClick} />
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    Welcome, {this.state.loggedInUser.name}
                 </div>
             );
         }
@@ -121,6 +124,10 @@ var Auction = React.createClass({
         );
     }
 }); 
+
+render((
+    <Login />
+), document.getElementById('login'));
 
 render((
     <EbayClone />

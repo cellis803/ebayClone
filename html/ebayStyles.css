@@ -1,0 +1,10 @@
+body {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+div#header {
+    height: 75px;
+    background-color: lightGrey;
+    margin-bottom: 20px;
+}
