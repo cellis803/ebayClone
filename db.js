@@ -51,7 +51,7 @@ module.exports = {
         return new Promise(
             (resolve, reject) => {
                 db.serialize(function () {
-                    db.all("SELECT userId, title, description, startingBid, endDateTime from auction", function (err, rows) {
+                    db.all("SELECT rowid, userId, title, description, startingBid, endDateTime from auction", function (err, rows) {
                         if (err) {
                             reject("Auction table does not exist");                            
                         } else {
@@ -88,14 +88,14 @@ module.exports = {
         return new Promise(
             (resolve, reject) => {
                 db.serialize(function () {
-                    db.each("SELECT rowid from user where name = '" + name + "'", function (err, row) {
-                        if (err) {
-                            reject("User table does not exist");
-                        } else {
-                            resolve(row);
-                        }
-
-                    });
+                    db.all("SELECT u.rowid, u.name from user u where u.name = '" + name + "'", function (err, rows) {
+                            if (rows.length === 1) {
+                                resolve(rows[0]);
+                            } else {
+                                reject("User does not exist");
+                            }
+                            
+                        });
                 });  
         });
     },

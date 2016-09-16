@@ -10,6 +10,18 @@ app.use(bodyParser.urlencoded({
 }));
 app.use('/', express.static('html'));
 
+app.post('/login', function(request, response) {
+  
+    ebayDB.GetUserId(request.body.username).then(
+        user => {
+            response.send(user);
+        }).catch(err => {
+                console.log(err);
+                response.status(500);
+                response.send(err);                
+        });
+});
+
 app.post('/user', function (request, response) {
     console.log("add a user");
     var name = request.body.name;
@@ -89,7 +101,7 @@ app.get('/auctions/', function (request, response) {
 
 var server = app.listen(3000, function () {
     console.log('Starting ebay clone server...');
-    console.log('Example app listening on port 8080...');
+    console.log('Example app listening on port 3000...');
 
     var p = ebayDB.initDB();
     p.then(
