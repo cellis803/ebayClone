@@ -7,12 +7,31 @@ var EbayClone = React.createClass({
         return {loggedInUser: ""};
     },
 
-    logMeIn: function(userId) {
-        this.setState({loggedInUser : userId});
+    logMeIn: function(user) {
+        this.setState(Object.assign({loggedInUser : user}));
     },
 
     render: function() {
-        return (<AuctionList user={this.state.loggedInUser} />);
+        return (
+                <div>
+                    <div id="header">
+                        <div className="yui3-g">
+                            <div className="yui3-u-1">
+                                <div className="yui3-g">
+                                    <div className="yui3-u-3-4">
+                                        reBay
+                                    </div>
+                                    <div className="yui3-u-1-4">
+                                            <Login setLoggedInUser={this.logMeIn} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>            
+                        
+                    <AuctionList user={this.state.loggedInUser} />
+                </div>
+            );
     }
 
 });
@@ -23,7 +42,7 @@ var Login = React.createClass({
                 loggedInUser: ""};
     },
 
-    handleClick: function(event) {
+    login: function(event) {
         
         var userName = $("#username").val();
         var userObj = {
@@ -34,7 +53,7 @@ var Login = React.createClass({
             
         }).done(function(loggedInUser) {
             that.setState(Object.assign({error: false, loggedInUser: loggedInUser}));
-            that.props.setLoggedIn(loggedInUser.rowid);
+            that.props.setLoggedInUser(loggedInUser);
 
         }).fail(function() {
             that.setState({error: true, loggedInUser: ""});
@@ -42,27 +61,33 @@ var Login = React.createClass({
             
     },
 
+    logout: function(event) {     
+        this.setState(Object.assign({error: false, loggedInUser: "" }));  
+        this.props.setLoggedInUser("");          
+    },  
+
     render: function() {
         if (this.state.error) {
             return (
                 <div>
                     Login with your username: <input type="text" id="username" name="name"  />
-                    <input id="loginButton" type="submit" value="Login" onClick={this.handleClick} />
-                    <h1 style={{color:777}}>Login Failed. Please enter user name again.</h1>
+                    <input className="ebayButton" id="loginButton" type="submit" value="Login" onClick={this.login} />
+                    <p className="error">Login Failed. Please enter user name again.</p>
                 </div>
                 
             );
         } else if (this.state.loggedInUser === "") {
             return (
                 <div>
-                    Login with your username: <input type="text" id="username" name="name"  />
-                    <input id="loginButton" type="submit" value="Login" onClick={this.handleClick} />
+                    Username: <input type="text" id="username" name="name"  />
+                    <input className="ebayButton" id="loginButton" type="submit" value="Login" onClick={this.login} />
                 </div>
             );
         } else {
             return (
                 <div>
-                    Welcome, {this.state.loggedInUser.name}
+                    Welcome, {this.state.loggedInUser.name}&nbsp;&nbsp;
+                     <input className="ebayButton" id="logoutButton" type="submit" value="Log Out" onClick={this.logout}  />
                 </div>
             );
         }
@@ -85,6 +110,7 @@ var AuctionList = React.createClass({
     render: function() {
                 return (
                     <div id="ebayHome">
+                    <h1>{this.props.user.name}</h1>
                         <div className="yui3-g">
                             <div className="yui3-u-2-3">
                                 <div id="auctionList"> 
@@ -124,10 +150,6 @@ var Auction = React.createClass({
         );
     }
 }); 
-
-render((
-    <Login />
-), document.getElementById('login'));
 
 render((
     <EbayClone />

@@ -8,3 +8,11 @@ div#header {
     background-color: lightGrey;
     margin-bottom: 20px;
 }
+
+.error {
+    color: red;
+}
+
+.ebayButton {
+    margin: 5px;
+}
