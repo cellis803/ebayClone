@@ -51,12 +51,23 @@ module.exports = {
         return new Promise(
             (resolve, reject) => {
                 db.serialize(function () {
-                    db.all("SELECT auction.rowid, userId, title, description, startingBid, endDateTime, u.name as sellerName from auction inner join user u on auction.userId = u.rowid ", function (err, rows) {
-                        if (err) {
-                            reject("Auction table does not exist");                            
-                        } else {
-                            resolve(rows);
-                        }
+                    db.all("SELECT auction.rowid, auction.userId, title, description, startingBid, endDateTime, u.name as sellerName, bid.bidValue as currentBid " +
+                            "from auction " + 
+                            "inner join user u on auction.userId = u.rowid " +
+                            "left outer join ( " +
+
+                            "SELECT b.rowid, b.bidValue, b.auctionId " +
+                            "FROM bid b " +
+                            "LEFT OUTER JOIN bid bb " +
+                            "   ON b.rowid= bb.rowid AND b.bidValue< bb.bidValue " +
+                            "WHERE bb.rowid IS NULL " +
+                            ") bid on bid.auctionId = auction.rowid", 
+                        function (err, rows) {
+                            if (err) {
+                                reject("Auction table does not exist");                            
+                            } else {
+                                resolve(rows);
+                            }
 
                     });
                 });
