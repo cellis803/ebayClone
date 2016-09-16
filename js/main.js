@@ -134,11 +134,11 @@ var Auction = React.createClass({
 
     render: function() {
         return (
-            <div className="yui3-g">
+            <div className="yui3-g auction">
                 <div className="yui3-u">
                     <div className="yui3-g">
                         <div className="yui3-u-1">
-                            <a href="#">{this.props.data.title}</a>
+                            <a href="#">{this.props.data.title}</a>&nbsp;(<span className="sellerName">{this.props.data.sellerName}</span>)
                             <br/>{this.props.data.description} 
                         </div>
                     </div>

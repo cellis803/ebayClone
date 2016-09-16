@@ -51,7 +51,7 @@ module.exports = {
         return new Promise(
             (resolve, reject) => {
                 db.serialize(function () {
-                    db.all("SELECT rowid, userId, title, description, startingBid, endDateTime from auction", function (err, rows) {
+                    db.all("SELECT auction.rowid, userId, title, description, startingBid, endDateTime, u.name as sellerName from auction inner join user u on auction.userId = u.rowid ", function (err, rows) {
                         if (err) {
                             reject("Auction table does not exist");                            
                         } else {

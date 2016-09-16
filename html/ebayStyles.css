@@ -16,3 +16,11 @@ div#header {
 .ebayButton {
     margin: 5px;
 }
+
+.auction {
+    margin-bottom: 10px;
+}
+
+.sellerName {
+    color: grey;
+}
