@@ -30,6 +30,14 @@ var EbayClone = React.createClass({
                     </div>            
                         
                     <AuctionList user={this.state.loggedInUser} />
+
+                    <div id="footer">
+                        <div className="yui3-g">
+                            <div className="yui3-u-1">
+                                
+                            </div>
+                        </div>
+                    </div>                      
                 </div>
             );
     }

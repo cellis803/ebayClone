@@ -9,6 +9,12 @@ div#header {
     margin-bottom: 20px;
 }
 
+div#footer {
+    height: 15px;
+    background-color: lightGrey;
+    margin-top: 20px;    
+}
+
 .error {
     color: red;
 }
