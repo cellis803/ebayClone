@@ -121,8 +121,23 @@ var AuctionList = React.createClass({
                 return (
                     <div id="ebayHome">
                         <div className="yui3-g">
-                            <div className="yui3-u-2-3">
+                            <div className="yui3-u-7-8">
                                 <div id="auctionList"> 
+                                    <div className="yui3-u-1">
+                                        <div className="yui3-g auctionHeader">
+                                            <div className="yui3-u-1-2">
+                                                Auctions
+                                            </div>
+                                            <div className="yui3-u-1-6">
+                                                Seller Info
+                                            </div>        
+                                            <div className="yui3-u-1-4">
+                                                Buyer Info
+                                            </div>                                                                                    
+                                        </div>
+                                    </div>
+                                
+                                    
                                     {
                                         
                                         this.state.auctionList.map(function(val, idx) {
@@ -139,7 +154,9 @@ var AuctionList = React.createClass({
 
 var Auction = React.createClass({
     getInitialState: function() {
-        return {currentBid : this.props.data.currentBid, highestBidder: this.props.data.highestBidder};
+        return {currentBid : this.props.data.currentBid, 
+                highestBidder: this.props.data.highestBidder, 
+                numberOfBids: this.props.data.numberOfBids};
     },
 
     bid: function() {
@@ -180,7 +197,9 @@ var Auction = React.createClass({
         $.post("/bid", bidObj, function(data) {
             
         }).done(function(auction) {
-            that.setState(Object.assign({currentBid: auction.currentBid, highestBidder: auction.highestBidder}));
+            that.setState(Object.assign({currentBid: auction.currentBid, 
+                                         highestBidder: auction.highestBidder,
+                                         numberOfBids: auction.numberOfBids }));
 
         }).fail(function() {
 
@@ -196,14 +215,22 @@ var Auction = React.createClass({
 
         return (
             <div className="yui3-g auction">
-                <div className="yui3-u">
+                <div className="yui3-u-1">
                     <div className="yui3-g">
-                        <div className="yui3-u-1">
-                            <a href="#">{this.props.data.title}</a>&nbsp;(<span className="sellerName">{this.props.data.sellerName}</span>) <span className="currentBid">Current Bid: ${this.state.currentBid}</span>
-                            &nbsp;(<span className="sellerName">{this.state.highestBidder}</span>) 
-                            <br/>{this.props.data.description} 
-                            {button}
+                        <div className="yui3-u-1-2">
+                            <a href="#">{this.props.data.title}</a>&nbsp; 
+                            [bids: {this.state.numberOfBids}]<br/>
+                            {this.props.data.description} 
+                            
                         </div>
+                        <div className="yui3-u-1-6">
+                            <span className="sellerName">{this.props.data.sellerName}</span>
+                        </div>
+                        <div className="yui3-u-1-4">
+                            <span className="currentBid">Current Bid: ${this.state.currentBid}</span>
+                            &nbsp;(<span className="sellerName">{this.state.highestBidder}</span>) 
+                            {button}
+                        </div>                        
                     </div>
                 </div>
                 <br/> 

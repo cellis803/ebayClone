@@ -18,9 +18,14 @@ div#header {
 }
 
 .auction {
+    margin-top: 5px;
     margin-bottom: 10px;
 }
 
 .sellerName {
     color: grey;
+}
+
+.auctionHeader {
+    background-color: lightblue;
 }

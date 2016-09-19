@@ -51,7 +51,8 @@ module.exports = {
         return new Promise(
             (resolve, reject) => {
                 db.serialize(function () {
-                    db.all("SELECT auction.rowid, auction.userId, title, description, startingBid, endDateTime, u.name as sellerName, bid.bidValue as currentBid, highestBidder  " +
+                    db.all("SELECT auction.rowid, auction.userId, title, description, startingBid, endDateTime, u.name as sellerName, bid.bidValue as currentBid, highestBidder, " +
+                            "( select count(*) from bid b3 where b3.auctionId = auction.rowid) as numberOfBids " +
                             "from auction " + 
                             "inner join user u on auction.userId = u.rowid " +
                             "left outer join ( " +
@@ -81,7 +82,8 @@ module.exports = {
         return new Promise(
             (resolve, reject) => {
                 db.serialize(function () {
-                    db.all("SELECT auction.rowid, auction.userId, title, description, startingBid, endDateTime, u.name as sellerName, bid.bidValue as currentBid, highestBidder " +
+                    db.all("SELECT auction.rowid, auction.userId, title, description, startingBid, endDateTime, u.name as sellerName, bid.bidValue as currentBid, highestBidder, " +
+                            "( select count(*) from bid b3 where b3.auctionId = auction.rowid) as numberOfBids " +
                             "from auction " + 
                             "inner join user u on auction.userId = u.rowid " +
                             "left outer join ( " +
