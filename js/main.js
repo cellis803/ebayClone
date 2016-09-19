@@ -107,17 +107,60 @@ var AuctionList = React.createClass({
             });
     },
     
-    AddAuction: function() {
-            
+    newAuction: function () {
+       var that = this;
+        var newAuctionDialog = $("#newAuctionDialog").dialog({
+            title: "Create New Auction",
+            buttons: {
+                "Submit Auction": function() {
+                    // if ($("#bidAmount").val() <= that.state.currentBid) {
+                    //     //$("#bidErrorMessage").show();
+                    // } else {
+                        //$("#bidErrorMessage").hide();
+                        that.submitNewAuction(this);
+                        newAuctionDialog.dialog("close");
+                    },
+
+                "Cancel": function() {
+                    //$("#bidErrorMessage").hide();
+                    newAuctionDialog.dialog("close");
+                }                      
+            }
+        });
+        $("#newAuctionDialog").dialog("open");
     },
 
-    bid: function () {
-        // var that = this;
-        // $.putJ
+    submitNewAuction: function() {
+
+        var that = this;
+        var auctionObj = {
+            "userId" : this.props.user.rowid,
+            "title" : $("#title").val(),
+            "description" : $("#description").val(),
+            "startingBid" : $("#startingBid").val(),
+            "duration" : $("#duration").val()
+        };
+
+        $.post("/auction", auctionObj, function(data) {
+            
+        }).done(function(auctions) {
+            that.setState({auctionList: auctions});
+
+        }).fail(function() {
+
+        }); 
     },
 
     render: function() {
                 var that = this;
+
+                var button;
+                if (this.props.user.name) {
+                    button = <input className="ebayButton" id="addAuctionBtnId" type="submit" value="Sell Something" onClick={this.newAuction} />;
+                } else {
+                    button = null;
+                }
+
                 return (
                     <div id="ebayHome">
                         <div className="yui3-g">
@@ -144,6 +187,8 @@ var AuctionList = React.createClass({
                                                 return <Auction key={val.rowid} user={that.props.user} data={val}/>;
                                         })
                                     }
+
+                                    {button}
                                 </div>
                             </div>
                         </div>                            
@@ -213,13 +258,22 @@ var Auction = React.createClass({
             button = null;
         }
 
+        var displayCurrentPrice;
+         if (this.state.currentBid) {
+            displayCurrentPrice = <div><span className="currentBid">Current Bid: ${this.state.currentBid}</span>(<span className="sellerName">{this.state.highestBidder}</span>){button}</div>;
+        } else {
+            displayCurrentPrice = <div><span className="currentBid">Starting Bid: ${this.props.data.startingBid}</span>{button}</div>;            
+        } 
+
+        var timeRemaining = showTimeRemaining(this.props.data.endDateTime);      
+
         return (
             <div className="yui3-g auction">
                 <div className="yui3-u-1">
                     <div className="yui3-g">
                         <div className="yui3-u-1-2">
                             <a href="#">{this.props.data.title}</a>&nbsp; 
-                            [bids: {this.state.numberOfBids}]<br/>
+                            [bids: {this.state.numberOfBids}] <br/>
                             {this.props.data.description} 
                             
                         </div>
@@ -227,16 +281,13 @@ var Auction = React.createClass({
                             <span className="sellerName">{this.props.data.sellerName}</span>
                         </div>
                         <div className="yui3-u-1-4">
-                            <span className="currentBid">Current Bid: ${this.state.currentBid}</span>
-                            &nbsp;(<span className="sellerName">{this.state.highestBidder}</span>) 
-                            {button}
+                            {displayCurrentPrice}
+                            Time Remaining: {timeRemaining} 
                         </div>                        
                     </div>
                 </div>
                 <br/> 
             </div>
-            
-
         );
     }
 }); 
@@ -244,3 +295,29 @@ var Auction = React.createClass({
 render((
     <EbayClone />
 ), document.getElementById('main'));
+
+function showTimeRemaining(date_future) {
+
+    var date_now = new Date();
+
+    // get total seconds between the times
+    var delta = Math.abs(date_future - date_now) / 1000;
+
+    // calculate (and subtract) whole days
+    var days = Math.floor(delta / 86400);
+    delta -= days * 86400;
+
+    // calculate (and subtract) whole hours
+    var hours = Math.floor(delta / 3600) % 24;
+    delta -= hours * 3600;
+
+    // calculate (and subtract) whole minutes
+    var minutes = Math.floor(delta / 60) % 60;
+    delta -= minutes * 60;
+
+    // what's left is seconds
+    var seconds = Math.floor(delta % 60) % 60;  // in theory the modulus is not required
+
+    return days + " days, " + hours + "h " + minutes + "m " + seconds + "s ";
+}
+

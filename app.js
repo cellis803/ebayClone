@@ -59,13 +59,17 @@ app.post('/bid', function (request, response) {
 app.post('/auction', function (request, response) {
     console.log("add auction item");
     var userId = request.body.userId;
-    var title = request.params.title;
-    var description = request.params.description;
-    var startingBid = request.params.startingBid;
-    var endDateTime = request.params.endDateTime;
-    ebayDB.AddAuction(userId, title, description, startingBid, endDateTime).then(
+    var title = request.body.title;
+    var description = request.body.description;
+    var startingBid = request.body.startingBid;
+    var duration = request.body.duration;
+    ebayDB.AddAuction(userId, title, description, startingBid, duration).then(
         () => {
-            response.send("added auction item");
+            ebayDB.GetAllAuctions().then(
+            auctions => {
+                response.send(auctions);
+
+            })
         }).catch(err => {
             console.log(err);
             response.status(500);

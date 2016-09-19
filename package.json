@@ -24,6 +24,7 @@
     "chai-as-promised": "^5.3.0",
     "express": "^4.14.0",
     "mocha": "^3.0.2",
+    "moment": "^2.15.0",
     "path": "^0.12.7",
     "react": "^0.14.2",
     "react-dom": "^0.14.2",

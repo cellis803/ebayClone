@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <div id="addAuctionDialog">
+    <div id="newAuctionDialog">
         <div class="yui3-g">
             <div class="yui3-u-1">
                 <p>Sell something.</p>                
@@ -41,7 +41,12 @@
                     <input type="text" name="startingBid" id="startingBid" value="" class="text ui-widget-content ui-corner-all">
                     <br/>
                     <label for="duration">Duration: </label>
-                    <input type="text" name="duration" id="duration" value="" class="text ui-widget-content ui-corner-all">
+                    <select name="duration" id="duration" class="text ui-widget-content ui-corner-all">
+                        <option value="1">1 Day</option>
+                        <option value="3">3 Days</option>
+                        <option value="5">5 Days</option>
+                        <option value="7">7 Days</option>
+                    </select>
                     <br/>                                                           
                 </form>
             </div>
@@ -67,17 +72,16 @@
                         
             });
 
-        var newAuctionDialog = $("#addAuctionDialog").dialog({
+        var newAuctionDialog = $("#newAuctionDialog").dialog({
             
                 autoOpen: false,
                 height: 300,
-                width: 400,
+                width: 450,
                 modal: true,
                 open: function(event, ui) {
                     $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
-                    $("#bidAmount").val("");
-                }
-                        
+                    //$("#bidAmount").val("");
+                }         
             });            
     });
 

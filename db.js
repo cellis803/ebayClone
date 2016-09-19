@@ -1,5 +1,6 @@
 var sqlite3 = require('sqlite3').verbose();
 var db = new sqlite3.Database('ebay.db');
+var moment = require('moment');
 
 module.exports = {
     initDB: function () {
@@ -146,12 +147,15 @@ module.exports = {
         });
     },
 
-    AddAuction: function(userid, title, description, startingbid, endtime){
+    AddAuction: function(userid, title, description, startingbid, duration) {
+ 
+        var endDate = moment().add(duration, 'days').valueOf();
+
         return new Promise(
             (resolve, reject) => {
                 db.serialize( function () {
                     var stmt = db.prepare("INSERT into auction values (?,?,?,?,?)");
-                    stmt.run(userid, title, description, startingbid, endtime, function(error){
+                    stmt.run(userid, title, description, startingbid, endDate, function(error){
                         if(error)
                         {
                             reject(error);
