@@ -318,6 +318,15 @@ function showTimeRemaining(date_future) {
     // what's left is seconds
     var seconds = Math.floor(delta % 60) % 60;  // in theory the modulus is not required
 
-    return days + " days, " + hours + "h " + minutes + "m " + seconds + "s ";
+    if (days === 0) {
+        if (hours === 0) {
+            return minutes + "m " + seconds + "s ";
+        } else {
+            return  hours + "h " + minutes + "m ";
+        }
+        
+    } else {
+        return days + " days, " + hours + "h ";
+    }
 }
 
