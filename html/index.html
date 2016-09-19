@@ -14,15 +14,40 @@
     <div id="bidDialog">
         <div class="yui3-g">
             <div class="yui3-u-1">
+                <p>Current Bid: $<span id="currentBidValue"></span></p>
                 <p>Place your bid.</p>
                 
                 <form>
                     <label for="bidAmount">Bid Amount: </label>
                     <input type="text" name="bidAmount" id="bidAmount" value="" class="text ui-widget-content ui-corner-all">
+                    <p id="bidErrorMessage" style="display:none" class="error">Please enter a bid higher than the current bid</p>
                 </form>
             </div>
         </div>
     </div>
+
+    <div id="addAuctionDialog">
+        <div class="yui3-g">
+            <div class="yui3-u-1">
+                <p>Sell something.</p>                
+                <form>
+                    <label for="title">Title: </label>
+                    <input type="text" name="title" id="title" value="" class="text ui-widget-content ui-corner-all">
+                    <br/>
+                     <label for="description">Description: </label>
+                    <input type="text" name="description" id="description" value="" class="text ui-widget-content ui-corner-all">
+                    <br/>
+                    <label for="startingBid">Starting Bid: </label>
+                    <input type="text" name="startingBid" id="startingBid" value="" class="text ui-widget-content ui-corner-all">
+                    <br/>
+                    <label for="duration">Duration: </label>
+                    <input type="text" name="duration" id="duration" value="" class="text ui-widget-content ui-corner-all">
+                    <br/>                                                           
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
     <script src="http://localhost:8080/bundle.js"></script>
@@ -41,6 +66,19 @@
                 }
                         
             });
+
+        var newAuctionDialog = $("#addAuctionDialog").dialog({
+            
+                autoOpen: false,
+                height: 300,
+                width: 400,
+                modal: true,
+                open: function(event, ui) {
+                    $(".ui-dialog-titlebar-close", ui.dialog | ui).hide();
+                    $("#bidAmount").val("");
+                }
+                        
+            });            
     });
 
 </script>

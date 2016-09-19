@@ -20,7 +20,7 @@ Development:
 
 * Build once: `npm run webpack`
 * Run dev server: `npm start`
-    * Web page: http://localhost:8080/
+    * Web page: http://localhost:3000/
     * Keep the console open to see errors and warnings
 
 You can check out hot reloading by making changes to the JavaScript source code. You’ll see the results of those changes in the browser right away.

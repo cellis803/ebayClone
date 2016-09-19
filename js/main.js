@@ -146,16 +146,25 @@ var Auction = React.createClass({
 
        var that = this;
         var bidDialog = $("#bidDialog").dialog({
+            title: that.props.data.title,
             buttons: {
                 "Submit Bid": function() {
-                    that.submitBid(this);
-                    bidDialog.dialog("close");
+                    if ($("#bidAmount").val() <= that.state.currentBid) {
+                        $("#bidErrorMessage").show();
+                    } else {
+                        $("#bidErrorMessage").hide();
+                        that.submitBid(this);
+                        bidDialog.dialog("close");
+                    }
+
                 },
                 Cancel: function() {
+                    $("#bidErrorMessage").hide();
                     bidDialog.dialog( "close" );
                 }                      
             }
         });
+        $("#currentBidValue").text(that.state.currentBid);
         $("#bidDialog").dialog("open");
     },
 
