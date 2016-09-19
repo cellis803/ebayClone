@@ -51,13 +51,14 @@ module.exports = {
         return new Promise(
             (resolve, reject) => {
                 db.serialize(function () {
-                    db.all("SELECT auction.rowid, auction.userId, title, description, startingBid, endDateTime, u.name as sellerName, bid.bidValue as currentBid " +
+                    db.all("SELECT auction.rowid, auction.userId, title, description, startingBid, endDateTime, u.name as sellerName, bid.bidValue as currentBid, highestBidder  " +
                             "from auction " + 
                             "inner join user u on auction.userId = u.rowid " +
                             "left outer join ( " +
 
-                            "SELECT b1.* " +
+                            "SELECT b1.*, u.name as highestBidder " +
                             "FROM bid b1 " +
+                            "INNER JOIN user u on b1.userId = u.rowid " + 
                             "LEFT OUTER JOIN bid b2 " +
                             "ON (b1.auctionId = b2.auctionId " +
                             "    AND b1.bidValue < b2.bidValue) " +
@@ -80,13 +81,14 @@ module.exports = {
         return new Promise(
             (resolve, reject) => {
                 db.serialize(function () {
-                    db.all("SELECT auction.rowid, auction.userId, title, description, startingBid, endDateTime, u.name as sellerName, bid.bidValue as currentBid " +
+                    db.all("SELECT auction.rowid, auction.userId, title, description, startingBid, endDateTime, u.name as sellerName, bid.bidValue as currentBid, highestBidder " +
                             "from auction " + 
                             "inner join user u on auction.userId = u.rowid " +
                             "left outer join ( " +
 
-                            "SELECT b1.* " +
+                            "SELECT b1.*, u.name as highestBidder " +
                             "FROM bid b1 " +
+                            "INNER JOIN user u on b1.userId = u.rowid " +                            
                             "LEFT OUTER JOIN bid b2 " +
                             "ON (b1.auctionId = b2.auctionId " +
                             "    AND b1.bidValue < b2.bidValue) " +
