@@ -170,11 +170,10 @@ var Auction = React.createClass({
         $.post("/bid", bidObj, function(data) {
             
         }).done(function(bid) {
-            //that.setState(Object.assign({error: false, loggedInUser: loggedInUser}));
-            //that.props.setLoggedInUser(loggedInUser);
+            that.setState(Object.assign({error: false, loggedInUser: loggedInUser}));
 
         }).fail(function() {
-            //that.setState({error: true, loggedInUser: ""});
+
         });     
     },
     render: function() {

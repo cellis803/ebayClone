@@ -44,7 +44,11 @@ app.post('/bid', function (request, response) {
     console.log(userId +  ", " + auctionId + ", " + bidValue);
     ebayDB.AddBid(userId, auctionId, bidValue).then(
         () => {
-            response.send("bid posted");
+            ebayDB.GetAnAuction(auctionId).then(
+            auction => {
+                response.send(auction);
+
+            })
         }).catch(err => {
             console.log(err);
             response.status(500);

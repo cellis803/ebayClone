@@ -76,6 +76,35 @@ module.exports = {
             });
     },
 
+   GetAnAuction: function (auctionId) {
+        return new Promise(
+            (resolve, reject) => {
+                db.serialize(function () {
+                    db.all("SELECT auction.rowid, auction.userId, title, description, startingBid, endDateTime, u.name as sellerName, bid.bidValue as currentBid " +
+                            "from auction " + 
+                            "inner join user u on auction.userId = u.rowid " +
+                            "left outer join ( " +
+
+                            "SELECT b1.* " +
+                            "FROM bid b1 " +
+                            "LEFT OUTER JOIN bid b2 " +
+                            "ON (b1.auctionId = b2.auctionId " +
+                            "    AND b1.bidValue < b2.bidValue) " +
+                            "WHERE b2.bidValue IS NULL " +
+                            ")  as bid on bid.auctionId = auction.rowid WHERE auction.rowid = " + auctionId,
+
+                        function (err, rows) {
+                            if (err) {
+                                reject("Auction table does not exist");                            
+                            } else {
+                                resolve(rows[0]);
+                            }
+
+                    });
+                });
+            });
+    },    
+
     AddUser: function(name){
         return new Promise(
             (resolve, reject) => {
