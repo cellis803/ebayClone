@@ -56,12 +56,14 @@ module.exports = {
                             "inner join user u on auction.userId = u.rowid " +
                             "left outer join ( " +
 
-                            "SELECT b.rowid, b.bidValue, b.auctionId " +
-                            "FROM bid b " +
-                            "LEFT OUTER JOIN bid bb " +
-                            "   ON b.rowid= bb.rowid AND b.bidValue< bb.bidValue " +
-                            "WHERE bb.rowid IS NULL " +
-                            ") bid on bid.auctionId = auction.rowid", 
+                            "SELECT b1.* " +
+                            "FROM bid b1 " +
+                            "LEFT OUTER JOIN bid b2 " +
+                            "ON (b1.auctionId = b2.auctionId " +
+                            "    AND b1.bidValue < b2.bidValue) " +
+                            "WHERE b2.bidValue IS NULL " +
+                            ")  as bid on bid.auctionId = auction.rowid ",
+
                         function (err, rows) {
                             if (err) {
                                 reject("Auction table does not exist");                            
@@ -117,6 +119,27 @@ module.exports = {
                 db.serialize( function () {
                     var stmt = db.prepare("INSERT into auction values (?,?,?,?,?)");
                     stmt.run(userid, title, description, startingbid, endtime, function(error){
+                        if(error)
+                        {
+                            reject(error);
+                        }
+                        else
+                        {
+                            stmt.finalize();
+                            resolve();
+                        }
+                    })
+                })
+            }
+        )
+    },
+
+    AddBid: function(userId, auctionId, bidValue) {
+        return new Promise(
+            (resolve, reject) => {
+                db.serialize( function () {
+                    var stmt = db.prepare("INSERT into bid values (?,?,?,?)");
+                    stmt.run(userId, auctionId, bidValue, new Date(), function(error){
                         if(error)
                         {
                             reject(error);

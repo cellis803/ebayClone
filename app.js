@@ -38,10 +38,11 @@ app.post('/user', function (request, response) {
 app.post('/bid', function (request, response) {
     console.log("bidding on an item");
     var userId = request.body.userId;
-    var auctionId = request.params.auctionId;
+    var auctionId = request.body.auctionId;
     var bidValue = request.body.bidValue;
-    var dateTime = request.params.dateTime;
-    ebayDB.AddBid(userId, auctionId, bidValue, dateTime).then(
+
+    console.log(userId +  ", " + auctionId + ", " + bidValue);
+    ebayDB.AddBid(userId, auctionId, bidValue).then(
         () => {
             response.send("bid posted");
         }).catch(err => {

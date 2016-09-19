@@ -143,7 +143,39 @@ var Auction = React.createClass({
     },
 
     bid: function() {
+
+       var that = this;
+        var bidDialog = $("#bidDialog").dialog({
+            buttons: {
+                "Submit Bid": function() {
+                    that.submitBid(this);
+                    bidDialog.dialog("close");
+                },
+                Cancel: function() {
+                    bidDialog.dialog( "close" );
+                }                      
+            }
+        });
         $("#bidDialog").dialog("open");
+    },
+
+    submitBid: function() {
+
+        var bidObj = {
+            "userId" : this.props.user.rowid,
+            "auctionId" : this.props.data.rowid,
+            "bidValue" : $("#bidAmount").val()
+        };
+
+        $.post("/bid", bidObj, function(data) {
+            
+        }).done(function(bid) {
+            //that.setState(Object.assign({error: false, loggedInUser: loggedInUser}));
+            //that.props.setLoggedInUser(loggedInUser);
+
+        }).fail(function() {
+            //that.setState({error: true, loggedInUser: ""});
+        });     
     },
     render: function() {
         var button;
