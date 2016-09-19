@@ -261,8 +261,11 @@ var Auction = React.createClass({
         });     
     },
     render: function() {
+
+        var timeRemaining = showTimeRemaining(this.props.data.endDateTime);    
+
         var button;
-        if (this.props.user.name) {
+        if (this.props.user.name && timeRemaining !== 0) {
             button = <input className="ebayButton" id="bidBtnId" type="submit" value="Bid" onClick={this.bid} />;
         } else {
             button = null;
@@ -275,7 +278,7 @@ var Auction = React.createClass({
             displayCurrentPrice = <div><span className="currentBid">Starting Bid: ${this.props.data.startingBid}</span>{button}</div>;            
         } 
 
-        var timeRemaining = showTimeRemaining(this.props.data.endDateTime);      
+          
 
         return (
             <div className="yui3-g auction">
@@ -309,6 +312,10 @@ render((
 function showTimeRemaining(date_future) {
 
     var date_now = new Date();
+
+    if (date_now > date_future) {
+        return 0;
+    }
 
     // get total seconds between the times
     var delta = Math.abs(date_future - date_now) / 1000;
