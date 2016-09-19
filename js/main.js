@@ -139,7 +139,7 @@ var AuctionList = React.createClass({
 
 var Auction = React.createClass({
     getInitialState: function() {
-        return {};
+        return {currentBid : this.props.data.currentBid};
     },
 
     bid: function() {
@@ -161,6 +161,7 @@ var Auction = React.createClass({
 
     submitBid: function() {
 
+        var that = this;
         var bidObj = {
             "userId" : this.props.user.rowid,
             "auctionId" : this.props.data.rowid,
@@ -169,8 +170,8 @@ var Auction = React.createClass({
 
         $.post("/bid", bidObj, function(data) {
             
-        }).done(function(bid) {
-            that.setState(Object.assign({error: false, loggedInUser: loggedInUser}));
+        }).done(function(auction) {
+            that.setState(Object.assign({currentBid: auction.currentBid}));
 
         }).fail(function() {
 
@@ -189,7 +190,7 @@ var Auction = React.createClass({
                 <div className="yui3-u">
                     <div className="yui3-g">
                         <div className="yui3-u-1">
-                            <a href="#">{this.props.data.title}</a>&nbsp;(<span className="sellerName">{this.props.data.sellerName}</span>) <span className="currentBid">Current Bid: ${this.props.data.currentBid}</span>
+                            <a href="#">{this.props.data.title}</a>&nbsp;(<span className="sellerName">{this.props.data.sellerName}</span>) <span className="currentBid">Current Bid: ${this.state.currentBid}</span>
                             <br/>{this.props.data.description} 
                             {button}
                         </div>
