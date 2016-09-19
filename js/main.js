@@ -34,7 +34,7 @@ var EbayClone = React.createClass({
                     <div id="footer">
                         <div className="yui3-g">
                             <div className="yui3-u-1">
-                                
+
                             </div>
                         </div>
                     </div>                      
@@ -174,6 +174,8 @@ var AuctionList = React.createClass({
                         <div className="yui3-g">
                             <div className="yui3-u-7-8">
                                 <div id="auctionList"> 
+                                    {button}
+                                    
                                     <div className="yui3-u-1">
                                         <div className="yui3-g auctionHeader">
                                             <div className="yui3-u-1-2">
@@ -196,7 +198,7 @@ var AuctionList = React.createClass({
                                         })
                                     }
 
-                                    {button}
+                                    
                                 </div>
                             </div>
                         </div>                            
